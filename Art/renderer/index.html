@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Art Browser</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div id="color-filter-overlay"></div>
+
+  <div id="app">
+    <div id="titlebar">
+      <button id="min">▁</button>
+      <button id="max">▢</button>
+      <button id="close">✕</button>
+    </div>
+
+    <div id="main-layout">
+
+      <div id="sidebar" class="collapsed">
+        <button id="sidebar-toggle">☰</button>
+        <div id="sidebar-content">
+          <div class="sidebar-section">
+            <div class="sidebar-label">ColorFilter</div>
+            <div class="slider-container">
+              <input type="range" id="color-filter-slider" min="0" max="100" value="0" class="color-slider">
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="sidebar-label">AI アシスト</div>
+            <button class="sidebar-ai-btn" id="ai-summarize" title="ページを要約">
+              <span class="ai-btn-icon">📝</span>
+              <span class="ai-btn-text">要約</span>
+            </button>
+            <button class="sidebar-ai-btn" id="ai-detail" title="詳細化" disabled>
+              <span class="ai-btn-icon">🔍</span>
+              <span class="ai-btn-text">詳細化</span>
+            </button>
+            <button class="sidebar-ai-btn" id="ai-simplify" title="表現の簡略化" disabled>
+              <span class="ai-btn-icon">✏️</span>
+              <span class="ai-btn-text">簡略化</span>
+            </button>
+          </div>
+
+          <!-- 背景色調節セクション -->
+          <div class="sidebar-section">
+            <div class="sidebar-label">背景色調節</div>
+            
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <input type="color" id="text-bg-color-picker" value="#f4ecd8" title="任意の背景色を選択" style="width: 36px; height: 36px; border: none; border-radius: 8px; cursor: pointer; padding: 0; background: transparent;">
+                <button id="apply-bg-color" class="sidebar-ai-btn" style="margin: 0; flex: 1; padding: 8px;">適用</button>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button id="preset-bg-sepia" class="sidebar-ai-btn" style="margin: 0; flex: 1; padding: 6px; font-size: 12px; background: rgba(244, 236, 216, 0.2);">セピア</button>
+                <button id="preset-bg-dark" class="sidebar-ai-btn" style="margin: 0; flex: 1; padding: 6px; font-size: 12px; background: rgba(50, 50, 50, 0.4);">ダーク</button>
+              </div>
+              <button id="reset-bg-color" class="sidebar-ai-btn" style="margin: 0; padding: 8px; margin-top: 4px; border-color: rgba(255,100,100,0.3);">リセット</button>
+            </div>
+          </div>
+
+        </div>
+
+        <button id="settings-toggle" class="settings-toggle" title="設定">
+          <span class="settings-icon">⚙</span>
+        </button>
+      </div>
+      <div id="main-content">
+        <div id="nav-bar">
+          <button id="back">←</button>
+          <button id="forward">→</button>
+          <button id="reload">⟳</button>
+          <input id="url" placeholder="Enter URL here" />
+          <button id="new-tab">＋</button>
+        </div>
+
+        <div id="tab-bar"></div>
+        <div id="view-container"></div>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+</body>
+
+</html>
