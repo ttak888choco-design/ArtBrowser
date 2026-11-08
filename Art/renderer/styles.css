@@ -1,0 +1,474 @@
+/* ===========================
+   Base layout
+=========================== */
+
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+/* アプリ全体の縦方向レイアウト */
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ===== Sidebar Layout Additions ===== */
+
+#main-layout {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 32px);
+  position: relative; /* サイドバーの絶対配置基準 */
+}
+
+#sidebar {
+  width: 30px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+  transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: hidden;
+  position: absolute; /* メインコンテンツに重なるように配置 */
+  left: 0;
+  top: 0;
+  z-index: 100;
+  color: #333;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.9), 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+#sidebar.expanded {
+  width: 220px;
+}
+
+#sidebar-toggle {
+  width: 100%;
+  height: 48px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#sidebar-content {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#sidebar.expanded #sidebar-content {
+  opacity: 1;
+}
+
+/* ===========================
+   AI Assist Buttons
+=========================== */
+
+.sidebar-ai-btn {
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: #222;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  letter-spacing: 0.3px;
+}
+
+.sidebar-ai-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.28);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-ai-btn:active:not(:disabled) {
+  transform: translateY(0);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.sidebar-ai-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.ai-btn-icon {
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.ai-btn-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-ai-btn.loading {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.sidebar-ai-btn.loading .ai-btn-icon {
+  animation: aiSpin 1s linear infinite;
+}
+
+@keyframes aiSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ===========================
+   Color Picker (Background Adjust)
+=========================== */
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+}
+
+/* ===========================
+   Sidebar ColorFilter Section
+=========================== */
+
+.sidebar-section {
+  padding: 12px 16px;
+}
+
+.sidebar-label {
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.slider-container {
+  width: 100%;
+  padding: 4px 0;
+}
+
+/* カスタムスライダー */
+.color-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #4a90d9, #7bb8f5);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* スライダーのハンドル（つまみ） - Chrome/Safari */
+.color-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #4a90d9;
+  border: 2px solid #fff;
+  border-radius: 3px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.color-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 3px 10px rgba(74, 144, 217, 0.4);
+}
+
+/* スライダーのハンドル - Firefox */
+.color-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #4a90d9;
+  border: 2px solid #fff;
+  border-radius: 3px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* スライダーのトラック - Firefox */
+.color-slider::-moz-range-track {
+  height: 4px;
+  background: linear-gradient(to right, #4a90d9, #7bb8f5);
+  border-radius: 2px;
+}
+
+/* 色調フィルターオーバーレイ */
+#color-filter-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  transition: background-color 0.3s ease;
+}
+
+/* ===========================
+   設定ボタン（サイドバー下部）
+=========================== */
+
+.settings-toggle {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#sidebar.expanded .settings-toggle {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.settings-toggle:hover {
+  background: rgba(255, 255, 255, 0.45);
+  transform: translateX(-50%) rotate(30deg);
+}
+
+.settings-icon {
+  color: #333;
+  font-size: 18px;
+}
+
+#main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-left: 30px; /* サイドバーの初期幅分マージンを開ける */
+}
+
+#tab-bar {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  background: rgba(50, 50, 50, 0.6);
+  /* 以前より明るく */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.tab {
+  padding: 6px 14px;
+  margin-right: 8px;
+  background: rgba(255, 255, 255, 0.18);
+  /* 明るく調整 */
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 160px;
+  /* タブの最大幅 */
+  overflow: hidden;
+  position: relative;
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.tab.active {
+  background: rgba(255, 255, 255, 0.38);
+  padding: 6px 20px;
+  /* 横に少し長くなる */
+}
+
+.tab .title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+
+
+.close-tab {
+  font-size: 12px;
+  padding: 0 4px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.close-tab:hover {
+  opacity: 1;
+}
+
+#new-tab-button {
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+#new-tab-button:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* ===========================
+   Navigation bar
+=========================== */
+
+#nav-bar {
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  background: rgba(30, 30, 30, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  gap: 6px;
+}
+
+.nav-button {
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+#url-input {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+#view-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+#view-container webview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(80, 150, 255, 0.35), transparent 70%),
+    radial-gradient(circle at 70% 60%, rgba(255, 80, 200, 0.25), transparent 70%);
+  filter: blur(80px);
+  animation: auroraFloat 10s linear infinite;
+}
+
+@keyframes auroraFloat {
+  0% {
+    transform: translate(0%, 0%) scale(1);
+  }
+
+  50% {
+    transform: translate(5%, -5%) scale(1.1);
+  }
+
+  100% {
+    transform: translate(0%, 0%) scale(1);
+  }
+}
+
+#tab-bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(0, 128, 255, 0.15),
+      rgba(255, 80, 200, 0.15),
+      rgba(255, 255, 255, 0.05));
+  animation: tabLightFlow 12s linear infinite;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+@keyframes tabLightFlow {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.tab::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.05));
+  opacity: 0;
+  animation: tabPulse 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes tabPulse {
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}

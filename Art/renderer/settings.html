@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>設定 - Art Browser</title>
+    <link rel="stylesheet" href="settings.css">
+</head>
+<!--これなんやねん-->
+
+<body>
+    <div class="aurora-bg"><!--これ-->
+        <div class="aurora-layer aurora-layer-1"></div>
+        <div class="aurora-layer aurora-layer-2"></div>
+        <div class="aurora-layer aurora-layer-3"></div>
+        <div class="aurora-layer aurora-layer-4"></div>
+    </div>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="settings-container">
+        <div class="section-bar">
+            <div class="section-header">設定</div>
+            <button class="section-btn active" data-section="general">
+                <span class="section-icon"></span>
+                <span class="section-label">一般</span>
+            </button>
+            <button class="section-btn" data-section="color-vision">
+                <span class="section-icon"></span>
+                <span class="section-label">色調補正</span>
+            </button>
+        </div>
+        <div class="settings-content">
+            <div class="section-panel active" id="section-general">
+                <h2 class="panel-title">一般設定</h2>
+                <div class="setting-group">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <span class="setting-name">アイケアモード</span>
+                            <span class="setting-desc">フラッシュから目を保護</span>
+                        </div>
+                        <div class="setting-control">
+                            <div class="custom-select-wrapper">
+                                <div class="custom-select" id="eyecare-custom-select">
+                                    <div class="custom-select-trigger">
+                                        <span class="selected-text">オフ</span>
+                                        <div class="arrow"></div>
+                                    </div>
+                                    <div class="custom-options">
+                                        <div class="custom-option selected" data-value="off">オフ</div>
+                                        <div class="custom-option" data-value="always">常時</div>
+                                        <div class="custom-option" data-value="flash">フラッシュ検出時</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="setting-note">
+                        常時: 画面の最大輝度を制限<br>
+                        フラッシュ検出時: 激しい点滅を検出した際、次フレームの輝度を制限
+                    </p>
+                </div>
+                <!-- 暫定APIキー設定 -->
+                <div class="setting-group" style="margin-top: 24px;">
+                    <div class="setting-item" style="flex-direction: column; align-items: flex-start; gap: 12px;">
+                        <div class="setting-info" style="margin-bottom: 8px;">
+                            <span class="setting-name">AI API設定 (暫定)</span>
+                            <span class="setting-desc">ページ要約機能を使用するためのGemini APIキーを入力してください</span>
+                        </div>
+                        <div style="display: flex; gap: 8px; width: 100%;">
+                            <input type="password" id="gemini-api-key-input" placeholder="AIzaSy..." style="flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: #fff; font-family: monospace;">
+                            <button id="save-api-key-btn" style="padding: 10px 16px; border-radius: 8px; border: none; background: rgba(255,255,255,0.2); color: #fff; cursor: pointer;">保存</button>
+                        </div>
+                        <p id="api-key-save-status" style="font-size: 11px; color: #8cf; margin-top: 4px; display: none;">保存しました</p>
+                    </div>
+                </div>
+            </div>
+            <div class="section-panel" id="section-color-vision">
+                <h2 class="panel-title">色覚補正</h2>
+                <p class="setting-description">
+                    色覚特性に合わせたフィルターを適用できます
+                </p>
+                <div class="setting-group">
+                    <div class="diagnosis-actions">
+                        <button class="diagnosis-btn" id="start-diagnosis">
+                            <span class="btn-icon">🔬</span>
+                            <span class="btn-text">
+                                <span class="btn-title">診断テストを開始</span>
+                                <span class="btn-desc">あなたに最適なフィルターを作成します</span>
+                                <span class="btn-desc">※これは色覚の目安を知るためのデモ版です。医療目的ではありません。<br>
+                                    実際の色覚の診断は適切な医療機関で行ってください。</span>
+                            </span>
+                        </button>
+                        <button class="clear-btn" id="clear-filter">
+                            <span class="btn-icon">✕</span>
+                            <span class="btn-text">フィルターをクリア</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <div class="current-filter-status" id="filter-status">
+                        <span class="status-label">現在のフィルター:</span>
+                        <span class="status-value" id="current-filter-name">なし</span>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <h3 class="group-title">フィルタープリセット</h3>
+                    <div class="color-vision-options">
+                        <button class="color-vision-btn active" data-filter="none">
+                            <span class="btn-icon">○</span>
+                            <span class="btn-text">
+                                <span class="btn-title">通常</span>
+                            </span>
+                        </button>
+                        <button class="color-vision-btn" data-filter="protanopia">
+                            <span class="btn-icon">🔴</span>
+                            <span class="btn-text">
+                                <span class="btn-title">1型色覚</span>
+                            </span>
+                        </button>
+                        <button class="color-vision-btn" data-filter="deuteranopia">
+                            <span class="btn-icon">🟢</span>
+                            <span class="btn-text">
+                                <span class="btn-title">2型色覚</span>
+                            </span>
+                        </button>
+                        <button class="color-vision-btn" data-filter="tritanopia">
+                            <span class="btn-icon">🔵</span>
+                            <span class="btn-text">
+                                <span class="btn-title">3型色覚</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 色覚診断モーダル（スライダー彩度調整方式） -->
+    <div class="diagnosis-modal" id="diagnosis-modal">
+        <div class="diagnosis-greenscreen">
+            <div class="diagnosis-glass-panel">
+                <div class="diagnosis-header">
+                    <h2>色覚調整テスト</h2>
+                    <button class="close-modal" id="close-diagnosis">×</button>
+                </div>
+                <div class="diagnosis-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <span class="progress-text" id="progress-text">1 / 6</span>
+                </div>
+                <p class="step-label" id="step-label">緑系</p>
+                <p class="step-instruction" id="step-instruction">中心の文字が読めますか？</p>
+                <div class="test-image-wrapper">
+                    <canvas id="test-canvas" width="400" height="220"></canvas>
+                </div>
+                <!-- 前半3問: Delta E UI -->
+                <div id="delta-e-ui">
+                    <div class="slider-container">
+                        <span class="slider-label-left">見えない</span>
+                        <input type="range" id="delta-e-slider" class="saturate-slider" min="2.0" max="30.0" value="2.3"
+                            step="0.1">
+                        <span class="slider-label-right">見える</span>
+                    </div>
+                    <div class="slider-value-display">
+                        色差 (ΔE): <span id="delta-e-value">2.2</span>
+                    </div>
+                    <button class="confirm-btn" id="confirm-delta-e">確認して次へ</button>
+                </div>
+                <!-- 後半3問: Slider UI -->
+                <div id="slider-ui" style="display: none;">
+                    <div class="slider-container">
+                        <span class="slider-label-left">低彩度</span>
+                        <input type="range" id="saturate-slider" class="saturate-slider" min="0" max="200" value="100"
+                            step="1">
+                        <span class="slider-label-right">高彩度</span>
+                    </div>
+                    <div class="slider-value-display">
+                        彩度: <span id="saturate-value">100</span>%
+                    </div>
+                    <button class="confirm-btn" id="confirm-step">彩度を確定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="settings.js"></script>
+</body>
+
+</html>

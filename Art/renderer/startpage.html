@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Art</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #e8f0ff 0%, #f0e8ff 30%, #ffe8f5 60%, #fff5e8 100%);
+    }
+
+    /* 動的オーロラ背景 */
+    .aurora-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .aurora-layer {
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+    }
+
+    .aurora-layer-1 {
+      background: radial-gradient(circle at 30% 40%, rgba(80, 150, 255, 0.4), transparent 50%);
+      animation: auroraMove1 12s ease-in-out infinite;
+    }
+
+    .aurora-layer-2 {
+      background: radial-gradient(circle at 70% 60%, rgba(255, 80, 200, 0.35), transparent 50%);
+      animation: auroraMove2 15s ease-in-out infinite;
+    }
+
+    .aurora-layer-3 {
+      background: radial-gradient(circle at 50% 30%, rgba(150, 100, 255, 0.3), transparent 45%);
+      animation: auroraMove3 18s ease-in-out infinite;
+    }
+
+    .aurora-layer-4 {
+      background: radial-gradient(circle at 20% 70%, rgba(100, 200, 255, 0.25), transparent 55%);
+      animation: auroraMove4 20s ease-in-out infinite;
+    }
+
+    @keyframes auroraMove1 {
+
+      0%,
+      100% {
+        transform: translate(0%, 0%) rotate(0deg) scale(1);
+      }
+
+      25% {
+        transform: translate(10%, -5%) rotate(5deg) scale(1.1);
+      }
+
+      50% {
+        transform: translate(5%, 10%) rotate(-3deg) scale(0.95);
+      }
+
+      75% {
+        transform: translate(-8%, 5%) rotate(2deg) scale(1.05);
+      }
+    }
+
+    @keyframes auroraMove2 {
+
+      0%,
+      100% {
+        transform: translate(0%, 0%) rotate(0deg) scale(1);
+      }
+
+      33% {
+        transform: translate(-15%, 10%) rotate(-5deg) scale(1.15);
+      }
+
+      66% {
+        transform: translate(12%, -8%) rotate(3deg) scale(0.9);
+      }
+    }
+
+    @keyframes auroraMove3 {
+
+      0%,
+      100% {
+        transform: translate(0%, 0%) scale(1);
+      }
+
+      50% {
+        transform: translate(8%, 12%) scale(1.2);
+      }
+    }
+
+    @keyframes auroraMove4 {
+
+      0%,
+      100% {
+        transform: translate(0%, 0%) rotate(0deg);
+      }
+
+      25% {
+        transform: translate(-10%, -10%) rotate(10deg);
+      }
+
+      75% {
+        transform: translate(15%, 5%) rotate(-8deg);
+      }
+    }
+
+    /* コンテンツ */
+    .content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    /* タイトル */
+    .title {
+      font-size: 72px;
+      font-weight: 300;
+      color: #333;
+      letter-spacing: 8px;
+      text-shadow: 0 2px 20px rgba(100, 100, 200, 0.15);
+      animation: titleFadeIn 1s ease-out;
+    }
+
+    @keyframes titleFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 検索ボックス */
+    .search-container {
+      animation: searchFadeIn 1s ease-out 0.3s backwards;
+    }
+
+    @keyframes searchFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 30px;
+      padding: 12px 24px;
+      width: 500px;
+      max-width: 90vw;
+      box-shadow:
+        0 4px 30px rgba(100, 100, 200, 0.15),
+        0 1px 3px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .search-box:focus-within {
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow:
+        0 8px 40px rgba(100, 100, 200, 0.25),
+        0 2px 6px rgba(0, 0, 0, 0.1);
+      transform: scale(1.02);
+    }
+
+    .search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 16px;
+      color: #333;
+      padding: 4px 0;
+    }
+
+    .search-input::placeholder {
+      color: #999;
+    }
+
+    .search-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+
+    .search-button:hover {
+      opacity: 1;
+    }
+
+    .search-icon {
+      width: 20px;
+      height: 20px;
+      fill: #666;
+    }
+
+    /* 装飾的な光の粒子 */
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      animation: particleFloat 8s ease-in-out infinite;
+    }
+
+    .particle:nth-child(1) {
+      left: 10%;
+      top: 20%;
+      animation-delay: 0s;
+    }
+
+    .particle:nth-child(2) {
+      left: 20%;
+      top: 70%;
+      animation-delay: 1s;
+    }
+
+    .particle:nth-child(3) {
+      left: 80%;
+      top: 30%;
+      animation-delay: 2s;
+    }
+
+    .particle:nth-child(4) {
+      left: 70%;
+      top: 80%;
+      animation-delay: 3s;
+    }
+
+    .particle:nth-child(5) {
+      left: 40%;
+      top: 10%;
+      animation-delay: 4s;
+    }
+
+    .particle:nth-child(6) {
+      left: 90%;
+      top: 50%;
+      animation-delay: 5s;
+    }
+
+    @keyframes particleFloat {
+
+      0%,
+      100% {
+        transform: translateY(0) scale(1);
+        opacity: 0.6;
+      }
+
+      50% {
+        transform: translateY(-20px) scale(1.5);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- オーロラ背景 -->
+  <div class="aurora-bg">
+    <div class="aurora-layer aurora-layer-1"></div>
+    <div class="aurora-layer aurora-layer-2"></div>
+    <div class="aurora-layer aurora-layer-3"></div>
+    <div class="aurora-layer aurora-layer-4"></div>
+  </div>
+
+  <!-- 光の粒子 -->
+  <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
+  <!-- コンテンツ -->
+  <div class="content">
+    <h1 class="title">Art</h1>
+
+    <div class="search-container">
+      <form class="search-box" id="search-form">
+        <input type="text" class="search-input" id="search-input" placeholder="Search" autocomplete="off" autofocus>
+        <button type="submit" class="search-button">
+          <svg class="search-icon" viewBox="0 0 24 24">
+            <path
+              d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('search-form');
+    const input = document.getElementById('search-input');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const query = input.value.trim();
+      if (query) {
+        // Google検索へリダイレクト
+        window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+      }
+    });
+
+    // Enterキーでも検索
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        form.dispatchEvent(new Event('submit'));
+      }
+    });
+  </script>
+</body>
+
+</html>
