@@ -56,7 +56,7 @@ ipcMain.handle("set-setting", (event, key, value) => {
 // ===========================
 ipcMain.handle("ai-summarize", async (event, text) => {
   // APIキー取得: 環境変数 → electron-store の順でフォールバック
-  const ai = new GoogleGenAI({ apiKey: "AIzaSyDdAwkKxtEK4U5iLSek7kRY9pnFy_BhPZY" });
+  const ai = new GoogleGenAI({ apiKey: "YourAPIKey" });
   if (!apiKey) {
     throw new Error("Gemini APIキーが設定されていません。環境変数 GEMINI_API_KEY を設定するか、設定画面でAPIキーを入力してください。");
   }
